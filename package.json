@@ -1,0 +1,26 @@
+{
+  "name": "chaut",
+  "version": "1.0.0",
+  "description": "application for chat on livehouse",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start": "npx ts-node-dev --respawn app.ts",
+    "compile-all": "npx tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "chaut"
+  },
+  "author": "fujita",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.3",
+    "socket.io": "^4.4.1",
+    "typescript": "^4.6.2"
+  },
+  "devDependencies": {
+    "ts-node": "^10.6.0",
+    "ts-node-dev": "^1.1.8"
+  }
+}
