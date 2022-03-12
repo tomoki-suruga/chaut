@@ -1,8 +1,11 @@
 {
+  "engins": {
+    "node": "v16.13.0"
+  },
   "name": "chaut",
   "version": "1.0.0",
   "description": "application for chat on livehouse",
-  "main": "index.js",
+  "main": "app.ts",
   "scripts": {
     "test": "test",
     "start": "npx ts-node-dev --respawn app.ts",
