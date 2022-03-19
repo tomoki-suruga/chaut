@@ -1,7 +1,6 @@
 <html>
   <head>
-    <titile>hoge</titile>
-    >
+    <title>CHAUT</title>
     <style>
       * {
         margin: 0;
@@ -10,16 +9,83 @@
       }
       body {
         font-size: 14px;
-        max-width: 600px;
         width: 100%;
         margin: 0 auto;
-        padding: 0 15px;
+        padding: 0;
+        background-color: #f5f7fa;
+      }
+      header {
+        height: 48px;
+        background-color: #ff4646;
+      }
+      h1 {
+        padding-top: 10px;
+        font-size: 30px;
+        font-family: Apple Symbols;
+        font-weight: 100;
+        color: #ffffff;
+        text-align: center;
+        vertical-align: middle;
+        letter-spacing: 6px;
+      }
+      main {
+        max-width: 600px;
+      }
+      footer {
+        bottom: 0;
+        position: absolute;
+        display: block;
+        width: 100%;
+        background-color: #ff4646;
+      }
+      #footer-container {
+        display: flex;
+        /* max-width: 600px; */
+        text-align: center;
+        padding: 12px;
       }
       .chatSend {
         padding: 3px;
-        position: fixed;
         bottom: 0;
         width: 100%;
+        margin: 0 auto;
+      }
+      #input-area {
+        width: 100%;
+        color: #ffffff;
+        font-family: Apple Symbols;
+        letter-spacing: 1.2pt;
+      }
+      #input-area span {
+        font-size: 15px;
+        width: 20%;
+        float: left;
+        padding-top: 2px;
+      }
+      #input-area input {
+        width: 80%;
+        border: none;
+        border-radius: 5px;
+      }
+      #user-name {
+        display: block;
+        width: 100%;
+        padding-bottom: 10px;
+      }
+      #button-container {
+        width: 43px;
+        margin-left: auto;
+      }
+      #text-area {
+        width: 100%;
+      }
+      #text-area textarea {
+        border: none;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        /* resize: none; */
+        width: 100%;
+        border-radius: 10px;
       }
       .chatText {
         border: 2px solid #ccc;
@@ -47,33 +113,56 @@
         background: #eee;
       }
     </style>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
   </head>
   <body>
-    <h1>チャットアプリをつくってみよう</h1>
-    <ul id="timeline"></ul>
-    <form id="chatSend" action="">
-      <input id="chatText" autocomplete="off" /><button class="sendButton">
-        送信
-      </button>
-    </form>
+    <header>
+      <h1>CHAUT</h1>
+    </header>
+    <main>
+      <ul id="timeline"></ul>
+    </main>
+    <footer>
+      <form id="chatSend" action="" name="form">
+        <div id="footer-container">
+          <div id="input-area">
+            <span>name</span>
+            <div id="user-name">
+              <input autocomplete="off" />
+            </div>
+            <div id="text-area">
+              <textarea id="comment" placeholder="comment"></textarea>
+            </div>
+          </div>
+          <div id="button-container">
+            <i class="fa fa-paper-plane" id="button" onClick="hoge()"></i>
+          </div>
+        </div>
+      </form>
+    </footer>
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
       $(() => {
         var socket = io()
-        $("form").submit(() => {
-          const msg = $("#chatText").val()
-          if (msg === "") {
-            return false
-          }
-          socket.emit("chat message", msg)
-          $("#chatText").val("")
-          return false
-        })
+        $("form").submit(() => {})
         socket.on("chat message", (msg) => {
           $("#timeline").append($("<li>").text(msg))
         })
       })
+      const hoge = () => {
+        var socket = io()
+        const msg = $("#comment").val()
+        if (msg === "") {
+          return false
+        }
+        socket.emit("chat message", msg)
+        $("#chatText").val("")
+        return false
+      }
     </script>
   </body>
 </html>
