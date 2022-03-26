@@ -9,7 +9,10 @@ app.get("/", (req: any, res: any) => {
 })
 
 io.on("connection", (socket: any) => {
-  socket.on("chat message", (msg: any) => {
+  socket.on("chat message", (msg: { userName: string; comment: string }) => {
+    if (msg.userName === "") {
+      msg.userName = "No Name"
+    }
     io.emit("chat message", msg)
   })
 })
