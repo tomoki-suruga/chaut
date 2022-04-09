@@ -184,14 +184,18 @@
         })
       })
       const hoge = () => {
+        const commentEl = document.getElementById("comment")
         var socket = io()
-        const comment = $("#comment").val()
+        const comment = commentEl.value
         const userName = $("#user-name-input").val()
-        if (comment === "") {
+        if (!comment.match(/\S/g)) {
+          $("#comment").val("")
+          commentEl.style.height = 25 + "px"
           return false
         }
         socket.emit("chat message", { userName: userName, comment: comment })
         $("#comment").val("")
+        commentEl.style.height = 25 + "px"
         return false
       }
     </script>
