@@ -161,7 +161,8 @@
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
       $(() => {
-        var socket = io()
+        let socket = io()
+        let mainEl = document.getElementById("main")
         $("form").submit(() => {})
         socket.on("chat message", (msg) => {
           msg
@@ -170,10 +171,11 @@
               .append(`<span>@${msg.userName}</span><br />`)
               .append(msg.comment.replace(/\r?\n/g, "<br>"))
           )
+          mainEl.scrollTop = mainEl.scrollHeight
         })
         let wh = window.innerHeight
         const mainHeight = wh - 84
-        document.getElementById("main").style.height = mainHeight + "px"
+        mainEl.style.height = mainHeight + "px"
 
         let textarea = document.getElementById("comment")
         let clientHeight = textarea.clientHeight
