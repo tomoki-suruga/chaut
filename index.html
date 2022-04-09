@@ -151,8 +151,8 @@
               <textarea id="comment" placeholder="comment"></textarea>
             </div>
           </div>
-          <div id="button-container">
-            <i class="fa fa-paper-plane" id="button" onClick="hoge()"></i>
+          <div id="button-container" onClick="onClickHandler()">
+            <i class="fa fa-paper-plane" id="button"></i>
           </div>
         </div>
       </form>
@@ -189,7 +189,7 @@
           textarea.style.height = textarea.scrollHeight + "px"
         })
       })
-      const hoge = () => {
+      const onClickHandler = () => {
         const commentEl = document.getElementById("comment")
         var socket = io()
         const comment = commentEl.value
