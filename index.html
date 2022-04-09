@@ -199,7 +199,10 @@
           commentEl.style.height = 25 + "px"
           return false
         }
-        socket.emit("chat message", { userName: userName, comment: comment })
+        socket.emit("chat message", {
+          userName: userName,
+          comment: comment.replace(/[\n]{2,}/, "\n"),
+        })
         $("#comment").val("")
         commentEl.style.height = 25 + "px"
         return false
