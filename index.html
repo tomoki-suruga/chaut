@@ -179,7 +179,8 @@
 
         let textarea = document.getElementById("comment")
         let clientHeight = textarea.clientHeight
-
+        console.log(document.documentElement.clientHeight)
+        // テキストエリアの上限行数(5行)を超えた場合高さを変えない
         textarea.addEventListener("input", () => {
           if (textarea.scrollHeight > 134) {
             textarea.style.height = "134px"
@@ -187,6 +188,15 @@
           }
           textarea.style.height = clientHeight + "px"
           textarea.style.height = textarea.scrollHeight + "px"
+        })
+
+        textarea.addEventListener("focus", () => {
+          console.log(document.documentElement.clientHeight)
+          mainEl.style.height = `${parseInt(mainEl.style.height) - 332}px`
+        })
+        textarea.addEventListener("blur", () => {
+          console.log(document.documentElement.clientHeight)
+          mainEl.style.height = `${parseInt(mainEl.style.height) + 332}px`
         })
       })
 
