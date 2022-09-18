@@ -1,0 +1,12 @@
+config:
+  target: "http://localhost:5000/"
+  phases:
+    - duration: 3
+      arrivalRate: 200
+scenarios:
+  - name: "chat message"
+    engine: "socketio"
+    flow:
+      - emit:
+          channel: "chat message"
+          data: "Hello world!"
