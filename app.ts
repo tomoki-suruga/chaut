@@ -15,23 +15,20 @@ app.get("/", (req: any, res: any) => {
 })
 
 io.on("connection", (socket: any) => {
-  socket.on("chat message", async (msg: { userName: string; comment: string }) => {
+  socket.on("addMessage", async (msg: { userName: string; comment: string }) => {
     if (msg.userName === "") {
       msg.userName = "No Name"
     }
-    redis.xadd('chaut', '*', msg.userName, msg.comment)
-    const respons = await redis.xread('COUNT', 100, 'STREAMS', 'chaut', 0)
-    io.emit("chat message", msg)
+    const result = await redis.xadd('chaut', '*', msg.userName, msg.comment)
+    io.emit("returnLatestNumber", result)
   })
 
-  socket.on("init",async () => {
-    const response = await redis.xread('STREAMS', 'chaut', 0)
-    const [key, message] = response !== null ? response[0]: [undefined, []];
+  socket.on("readMessages", async (massageId: string) => {
+    const response = await redis.xread('STREAMS', 'chaut', massageId)
+    const [_, message] = response !== null ? response[0]: [undefined, []];
     const msgs = message.map(m => ({'userName': m[1][0], 'comment': m[1][1]}))
-    console.log('msgs', msgs)
-    console.log('key', key)
-    io.emit("init", msgs)
+    io.emit("returnMessages", msgs)
   })
 })
 
-http.listen(port, () => console.log(`Example app listening on port ${port}!!!`))
+http.listen(port, () => console.log(`brows localhost:80`))

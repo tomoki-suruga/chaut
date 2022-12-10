@@ -183,26 +183,29 @@
       let socket = io()
       let mainEl = document.getElementById("main")
       $("form").submit(() => { })
-      socket.on("chat message", (msg) => {
-        appendMessage(msg)
-        mainEl.scrollTop = mainEl.scrollHeight
+      socket.on("returnLatestNumber", (latestMessageId) => {
+        const id = sessionStorage.getItem('latestMessageId')
+        socket.emit("readMessages", id)
+        sessionStorage.setItem('latestMessageId', latestMessageId)
+        // mainEl.scrollTop = mainEl.scrollHeight
       })
-      socket.on('init', (msgs) => {
-        console.log(msgs)
+      socket.on("returnMessages", (msgs) => {
         msgs.forEach(msg => appendMessage(msg));
         mainEl.scrollTop = mainEl.scrollHeight
       })
-      socket.emit("init");
+
+      socket.emit("readMessages", 0);
 
       let wh = window.innerHeight
+      // TODO px数直書き直したい
       const mainHeight = wh - 84
       mainEl.style.height = mainHeight + "px"
 
       let textarea = document.getElementById("comment")
       let clientHeight = textarea.clientHeight
-      console.log(document.documentElement.clientHeight)
       // テキストエリアの上限行数(5行)を超えた場合高さを変えない
       textarea.addEventListener("input", () => {
+        // TODO px数直書き直したい
         if (textarea.scrollHeight > 134) {
           textarea.style.height = "134px"
           return
@@ -212,13 +215,19 @@
       })
 
       textarea.addEventListener("focus", () => {
-        console.log(document.documentElement.clientHeight)
-        // mainEl.style.height = `${parseInt(mainEl.style.height) - 332}px`
+        // TODO px数直書き直したい
+        // TODO コメント欄の上下がバグってる
+        mainEl.style.height = `${parseInt(mainEl.style.height) - 332}px`
       })
       textarea.addEventListener("blur", () => {
-        console.log(document.documentElement.clientHeight)
+        // TODO px数直書き直したい
         mainEl.style.height = `${parseInt(mainEl.style.height) + 332}px`
       })
+      // TODO サーバー負荷考える
+      // リクエストが途絶えた時だけ投げる様にできるのが理想
+      setInterval(() => {
+        socket.emit('readMessages', sessionStorage.getItem('latestMessageId'))
+      }, 60000)
     })
 
     const appendMessage = (msg) => {
@@ -235,14 +244,16 @@
       const userName = $("#user-name-input").val()
       if (!comment.match(/\S/g)) {
         $("#comment").val("")
+        // TODO px数直書き直したい
         commentEl.style.height = 25 + "px"
         return false
       }
-      socket.emit("chat message", {
+      socket.emit("addMessage", {
         userName: userName,
         comment: comment.replace(/[\n]{2,}/, "\n"),
       })
       $("#comment").val("")
+      // TODO px数直書き直したい
       commentEl.style.height = 25 + "px"
       return false
     }
