@@ -1,0 +1,33 @@
+version: "3.4"
+
+services:
+  chaut:
+    image: chaut
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - 80:5000
+    networks:
+      - app-net
+
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning
+    volumes:
+      - cache:/data
+    networks:
+      - app-net
+
+volumes:
+  cache:
+    driver: local
+
+networks:
+  app-net:
+    driver: bridge
